@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import Login from "../pages/Login";
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import Logout from "../components/Logout";
+import Login from "./Login";
 
 function LoginPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -9,13 +11,31 @@ function LoginPage() {
     setIsLoggedIn(true); // Example action after login
   };
 
+  const [username, setUsername] = useState(null);
+
+  // Check token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    if (token) {
+      // Decode the token and extract the username
+      const decodedToken = jwtDecode(token);
+      setUsername(decodedToken.username); // Assuming the username is stored in the token
+    } else {
+      setUsername(null);
+    }
+  }, []);
+
   return (
     <div>
-      {/* Pass the handleLogin function as the onLogin prop */}
-      <Login onLogin={onLogin} />
-
-      {/* Optionally, you can show something based on login status */}
-      {isLoggedIn && <p>Welcome, user!</p>}
+      {username ? (
+        <>
+          <h1>Welcome, {username}</h1>
+          <Logout /> // Display username if token is present
+        </> // Display username if token is present
+      ) : (
+        <Login></Login>
+      )}
     </div>
   );
 }

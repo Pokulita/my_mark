@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   // Step 1: Initialize state to store user inputs
   const [formData, setFormData] = useState({
     username: "",
@@ -57,6 +59,7 @@ function Register() {
       if (response.ok) {
         // Registration successful
         alert("Registration successful!");
+        navigate("/login");
       } else {
         // Handle backend error (e.g., email already exists)
         setErrors({ ...errors, form: data.message || "Registration failed!" });

@@ -8,7 +8,7 @@ from flask import Flask, jsonify, request
 import cx_Oracle
 import bcrypt
 import jwt
-from flask_cors import CORS  # Import the CORS package
+from flask_cors import CORS, cross_origin  # Import the CORS package
 
 app = Flask(__name__)
 
@@ -45,8 +45,22 @@ def register():
         "INSERT INTO users (username, email, password) VALUES (:username, :email, :password)",
         {'username': username, 'email': email, 'password': hashed_password.decode('utf-8')}
     )
-    connection.commit()
 
+    cursor.execute("SELECT id FROM users WHERE email = :email", {'email': email})
+    user_id = cursor.fetchone()[0]
+
+    cursor.execute("SELECT id FROM courses")
+    courses = cursor.fetchall()
+
+    print(courses)
+    print(user_id)
+    for course in courses:
+        course_id = course[0]
+        cursor.execute(
+            "INSERT INTO student_courses (user_id, course_id,passed) VALUES (:user_id, :course_id, 0)",
+            {'user_id': user_id, 'course_id': course_id}
+        )
+    connection.commit()
     cursor.close()
     connection.close()
 
@@ -64,7 +78,7 @@ def login():
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    cursor.execute("SELECT password,username FROM users WHERE email = :email", {'email': email})
+    cursor.execute("SELECT id,password,username FROM users WHERE email = :email", {'email': email})
     result = cursor.fetchone()
 
     if result is None:
@@ -72,7 +86,7 @@ def login():
 
     # Check if the email and password combination is correct
 
-    stored_password, username = result  # Unpack the result
+    user_id,stored_password, username = result  # Unpack the result
 
     # Check if the password matches
     if not bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
@@ -80,6 +94,7 @@ def login():
 
     # Generate JWT token (set an expiration time if necessary)
     payload = {
+        'id':user_id,
         'username': username,
         'email': email
     }
@@ -89,7 +104,63 @@ def login():
     print(f"Payload: {payload}")
     print(f"Secret Key: {secret_key}")
     print("Generated Token: ", token)
+
+
+    cursor.close()
+    connection.close()
     return jsonify({"success": True, "token": token}), 200
+
+
+
+
+@app.route('/courses', methods=['GET'])
+def get_user_courses():
+    tuser_id = request.args.get('user_id')
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    print(tuser_id)
+    cursor.execute("""    SELECT c.id, c.name, c.ects, sc.passed 
+                            FROM student_courses sc
+                            JOIN courses c ON c.id = sc.course_id
+                            WHERE sc.user_id = :user_id""",
+                   {
+        'user_id': tuser_id
+    })  # Adjust with your actual table and columns
+    result = cursor.fetchall()
+
+    # Convert the result to a list of dictionaries
+    courses = [{"id": row[0], "name": row[1], "ects": row[2],"passed" :row[3]} for row in result]
+
+    cursor.close()
+    connection.close()
+
+    return jsonify(courses)
+
+@app.route('/mark_course_passed', methods=['POST'])
+def mark_course_passed():
+    data = request.get_json()
+    user_id = data.get('user_id')
+    course_id = data.get('course_id')
+
+    if not user_id or not course_id:
+        return jsonify({"success": False, "message": "User ID and Course ID are required"}), 400
+
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+
+    # Update the 'passed' status of the course
+    cursor.execute("""
+        UPDATE student_courses
+        SET passed = 1
+        WHERE user_id = :user_id AND course_id = :course_id
+    """, {
+        'user_id': user_id,
+        'course_id': course_id
+    })
+    connection.commit()
+    return jsonify({"success": True, "message": "Course marked as passed"}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

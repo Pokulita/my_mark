@@ -21,7 +21,7 @@ function Greeting() {
     <nav>
       <ul>
         {username ? (
-          <h1>Welcome, {username}</h1> // Display username if token is present
+          <h2>Welcome, {username}</h2> // Display username if token is present
         ) : (
           <li>
             <a href="/login">Login</a> {/* Show login link if no token */}
