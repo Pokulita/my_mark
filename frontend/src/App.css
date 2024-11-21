@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  
 }
 
 .App-logo {
@@ -35,4 +36,157 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+/*main page*/
+
+h2{
+  text-align: center;
+}
+
+.course{
+  display: flex; /* Makes children align horizontally */
+  align-items: center; /* Vertically centers the content */
+  justify-content: space-between; /* Creates space between items */
+  padding: 10px 20px;
+  border: 1px solid #ccc; /* Optional for visual clarity */
+  border-radius: 8px; /* Optional for aesthetics */
+  margin-bottom: 10px;
+}
+
+.courses-container{
+  padding: 0 40px;
+  margin: 0 100px ;
+
+}
+
+@media(max-width: 700px){
+  .courses-container{
+    padding: 0 5px;
+    margin: 0 10px;
+  }
+}
+
+.course-name{
+  flex: 2; /* Takes up available space on the left */
+  text-align: left;
+}
+
+.course-status{
+  flex: 1; /* Takes up space on the right */
+  text-align: right;
+  border: 0;
+}
+
+.button-actual{
+  color: white;
+  background-color: rgb(15, 190, 15);
+  border: 0;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 5px;
+  font-weight: bold;
+  
+  
+}
+
+.button-actual:hover{
+  color: white;
+  background-color: green;
+  
+  border-radius: 5px;
+  
+  
+}
+.status-text{
+  padding-right: 10px;
+  font-size: 18px;
+}
+
+.course-ects{
+  flex: 1; /* Takes up space in the center */
+  text-align: center;
+}
+
+/*end main page*/
+
+/*login*/
+
+.login-container{
+  
+  display: block;
+  align-items: center;
+  text-align: center;
+  
+}
+
+.login-header{
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+.login-email, .login-pswd{
+display: block;
+text-align: center;
+margin: 10px auto;
+font-size: 20px;
+border-radius: 10px;
+}
+
+
+
+.login-button{
+  font-size: 100px;
+}
+
+.login-register{
+
+}
+
+/*end login*/
+
+/*logout*/
+
+.logout-button{
+  margin: auto;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+.logout-go-back{
+  margin: 20px auto;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+
+/*end logout*/
+
+/*main-page*/
+
+.main-page-link{
+  max-width: 20vh;
+  max-height: 40px;
+  margin: 20px auto;
+  padding: 3px;
+  font-weight:bold;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 2px solid black;
+  border-radius: 10px;
+  justify-content: center;
+}
+
+.main-page-link:hover{
+  background-color: black;
+  color: white;
 }

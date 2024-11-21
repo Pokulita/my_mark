@@ -37,24 +37,34 @@ const CourseList = ({ userId }) => {
   };
 
   return (
-    <div>
+    <div className="courses-container">
       <h2>Courses</h2>
-      <tbody>
+      <sec>
+        <div className="course">
+          <h3 className="course-name">Name</h3>
+          <h3 className="course-ects">ECTS</h3>
+          <h3 className="course-status">STATUS</h3>
+        </div>
         {courses.map((course) => (
-          <tr key={course.id}>
-            <td>{course.name}</td>
-            <td>{course.ects}</td>
-            <td>{course.passed ? "Passed" : "Not Passed"}</td>
-            <td>
-              <button onClick={() => handlePass(userId, course.id)}>
-                {course.passed ? "Unmark Passed" : "Mark as Passed"}
-              </button>
-            </td>
-          </tr>
+          <div className="course" key={course.id}>
+            <div className="course-name">{course.name}</div>
+            <div className="course-ects">{course.ects}</div>
+            <div className="course-status">
+              {course.passed ? (
+                <span className="status-text">Done</span>
+              ) : (
+                <button
+                  onClick={() => handlePass(userId, course.id)}
+                  className="button-actual"
+                >
+                  Pass
+                </button>
+              )}
+            </div>
+          </div>
         ))}
-      </tbody>
+      </sec>
     </div>
   );
 };
-
 export default CourseList;

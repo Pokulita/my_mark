@@ -75,12 +75,13 @@ function Register() {
   return (
     <div>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="login-container">
         <div>
-          <label>Username</label>
           <input
+            className="login-email"
             type="text"
             name="username"
+            placeholder="Username"
             value={formData.username}
             onChange={handleInputChange}
             required
@@ -89,10 +90,11 @@ function Register() {
         </div>
 
         <div>
-          <label>Email</label>
           <input
+            className="login-email"
             type="email"
             name="email"
+            placeholder="Email"
             value={formData.email}
             onChange={handleInputChange}
             required
@@ -101,10 +103,11 @@ function Register() {
         </div>
 
         <div>
-          <label>Password</label>
           <input
+            className="login-email"
             type="password"
             name="password"
+            placeholder="Password"
             value={formData.password}
             onChange={handleInputChange}
             required
@@ -113,10 +116,11 @@ function Register() {
         </div>
 
         <div>
-          <label>Confirm Password</label>
           <input
+            className="login-email"
             type="password"
             name="confirmPassword"
+            placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleInputChange}
             required
@@ -124,7 +128,9 @@ function Register() {
           {errors.confirmPassword && <span>{errors.confirmPassword}</span>}
         </div>
 
-        <button type="submit">Register</button>
+        <button classname="login-button" type="submit">
+          Register
+        </button>
 
         {errors.form && <p>{errors.form}</p>}
       </form>

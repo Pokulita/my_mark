@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import Logout from "../components/Logout";
 import Login from "./Login";
+import { Link } from "react-router-dom";
 
 function LoginPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -30,8 +31,12 @@ function LoginPage() {
     <div>
       {username ? (
         <>
-          <h1>Welcome, {username}</h1>
-          <Logout /> // Display username if token is present
+          <h2>Welcome, {username}</h2>
+          <Logout />
+
+          <Link to="/" className="logout-go-back">
+            Back to main page.
+          </Link>
         </> // Display username if token is present
       ) : (
         <Login></Login>

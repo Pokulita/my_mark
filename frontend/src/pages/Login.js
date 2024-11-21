@@ -30,24 +30,30 @@ function Login({ onLogin }) {
   };
 
   return (
-    <div>
+    <div className="login-container">
       <div>
         <h2>Login</h2>
         <input
+          className="login-email"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
+          className="login-pswd"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin}>Login</button>
+        <button classname="login-button" onClick={handleLogin}>
+          Login
+        </button>
       </div>
-      <Link to="/register">Do not have an account.</Link>
+      <Link to="/register" className="login-register">
+        Do not have an account.
+      </Link>
     </div>
   );
 }
